@@ -7,7 +7,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="slider-carousel owl-carousel owl-theme">
-                        <div class="slider">
+                        @if($cms[0]->slug == "slider")
+                            @foreach ( json_decode($cms[0]->section) as $data)
+                                @if ($data)
+                                <div class="slider">
+                                    <div class="pic">
+                                        <img src="{{ asset('uploads/sliders').'/'.$data }}" class="w-100">
+                                    </div>
+                                </div>
+                                @endif
+                            @endforeach
+                        @endif
+                        {{-- <div class="slider">
                             <div class="pic">
                                 <img src="{{ asset('frontend/images/slider-dummy.png') }}" class="w-100">
                             </div>
@@ -16,12 +27,7 @@
                             <div class="pic">
                                 <img src="{{ asset('frontend/images/slider-dummy.png') }}" class="w-100">
                             </div>
-                        </div>
-                        <div class="slider">
-                            <div class="pic">
-                                <img src="{{ asset('frontend/images/slider-dummy.png') }}" class="w-100">
-                            </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -38,7 +44,7 @@
                             <p>Our experts are here to help you</p>
                         </div>
                     </div>
-                    <div class="txt-box mt-4 my-md-0">
+                    <div class="mt-4 txt-box my-md-0">
                         <img src="{{ asset('frontend/images/header-call.png') }}">
                         <h6>95866 93000</h6>
                     </div>
@@ -58,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-4 my-md-0">
+                <div class="mt-4 col-md-4 my-md-0">
                     <div class="contact-box">
                         <img src="{{ asset('frontend/images/contact-person.png') }}">
                         <div class="detail">
@@ -67,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-4 my-md-0">
+                <div class="mt-4 col-md-4 my-md-0">
                     <div class="contact-box">
                         <img src="{{ asset('frontend/images/download.png') }}">
                         <div class="detail">
@@ -88,7 +94,7 @@
                         <p>When you choose us, you're choosing precision, reliability, and a commitment. Our advanced
                             technology and experienced team guarantee accurate and timely results. We focus on your
                             unique needs, providing tailored solutions and ensuring the security of your data.</p>
-                        <div class="row justify-content-between pt-4 pb-4 mr-md-5">
+                        <div class="pt-4 pb-4 row justify-content-between mr-md-5">
                             <div class="count-box">
                                 <h3>80</h3>
                                 <h6>No of Labs</h6>
@@ -111,7 +117,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mt-5 my-md-0">
+                <div class="mt-5 col-md-6 my-md-0">
                     <div class="pic">
                         <img src="{{ asset('frontend/images/about.png') }}" class="w-100">
                     </div>
@@ -125,6 +131,23 @@
                 <h4>Popular Health Packages</h4>
             </div>
             <div class="tab-sec">
+                <div class="tab-container" id="packageTab">
+                    <div class="tab active" target-url="{{ route('frontend.select_package', ['id'=>0]) }}"
+                        data-tab="0">All</div>
+                    @foreach ($package_categories as $category)
+                    <div class="tab" target-url="{{ route('frontend.select_package', ['id'=>$category->id]) }}"
+                        data-tab="{{ $category->id }}">{{ $category->name }}</div>
+                    @endforeach
+                </div>
+                <div class="tab-data-container" id="packageDataTab">
+                    <div class="tab-data active" tab-data="popular">
+                        <div class="lab-carousel owl-carousel owl-theme">
+                            @include('frontend.packages')
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="tab-sec">
                 <div class="tab-container" id="packageTab">
                     <div class="tab active" data-tab="popular">Popular Packages</div>
                     <div class="tab" data-tab="fever">Fever</div>
@@ -377,7 +400,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
         </div>
     </div>
     <div class="find-test">
@@ -386,42 +410,12 @@
                 <h4>Find Tests by Health Concern</h4>
             </div>
             <div class="test-carousel owl-carousel owl-theme">
+                @foreach ($healths as $health)
                 <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-01.png') }}" class="w-100">
-                    <p>Heart</p>
+                    <img src="{{ asset('uploads/health_concern').'/'.$health->image }}" class="w-100">
+                    <p>{{ $health->name }}</p>
                 </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-02.png') }}" class="w-100">
-                    <p>Liver</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-03.png') }}" class="w-100">
-                    <p>Kidney</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-04.png') }}" class="w-100">
-                    <p>Bone</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-05.png') }}" class="w-100">
-                    <p>Thyroid</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-06.png') }}" class="w-100">
-                    <p>Sexual Wellness</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-07.png') }}" class="w-100">
-                    <p>Diabetes</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-08.png') }}" class="w-100">
-                    <p>Skin</p>
-                </div>
-                <div class="test-box">
-                    <img src="{{ asset('frontend/images/test-01.png') }}" class="w-100">
-                    <p>Heart</p>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -431,36 +425,17 @@
                 <h4>Top Booked Diagnostic Tests</h4>
             </div>
             <div class="top-test-carousel owl-carousel owl-theme">
+                @foreach ($tests as $test )
+
                 <div class="top-box">
-                    <h4>T3 TH TSH</h4>
+                    <h4>{{ $test->name }}</h4>
                     <p>Also known as Thyroid Profile Total Blood</p>
                     <h6>E reports on next day</h6>
-                    <a>+ More Details</a>
+                    <a href="{{ route('frontend.home.test_show',['id' => base64_encode($test->id)])}}"
+                        target-url="{{ route('frontend.home.test_show',['id' => base64_encode($test->id)])}}"
+                        data-id="{{ base64_encode($test->id) }}">+ More Details</a>
                 </div>
-                <div class="top-box">
-                    <h4>T3 TH TSH</h4>
-                    <p>Also known as Thyroid Profile Total Blood</p>
-                    <h6>E reports on next day</h6>
-                    <a>+ More Details</a>
-                </div>
-                <div class="top-box">
-                    <h4>Lipid Profile</h4>
-                    <p>Also known as Thyroid Profile Total Blood</p>
-                    <h6>E reports on next day</h6>
-                    <a href="/testdetail">+ More Details</a>
-                </div>
-                <div class="top-box">
-                    <h4>Vitamin B12</h4>
-                    <p>Also known as Thyroid Profile Total Blood</p>
-                    <h6>E reports on next day</h6>
-                    <a>+ More Details</a>
-                </div>
-                <div class="top-box">
-                    <h4>Lipid Profile</h4>
-                    <p>Also known as Thyroid Profile Total Blood</p>
-                    <h6>E reports on next day</h6>
-                    <a>+ More Details</a>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -506,13 +481,13 @@
                         <p>Branch Network</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 mt-4 my-md-0">
+                <div class="mt-4 col-lg-4 col-md-4 my-md-0">
                     <div class="certi-box">
                         <img src="{{ asset('frontend/images/dummy-certi.png') }}" class="w-100">
                         <p>Branch Network</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 mt-4 my-md-0">
+                <div class="mt-4 col-lg-4 col-md-4 my-md-0">
                     <div class="certi-box">
                         <img src="{{ asset('frontend/images/dummy-certi.png') }}" class="w-100">
                         <p>Branch Network</p>
@@ -860,3 +835,4 @@
     </div>
 </div>
 @endsection
+

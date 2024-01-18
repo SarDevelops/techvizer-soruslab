@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    public const ADMIN_HOME = '/admin/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -36,5 +37,24 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+    }
+
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+    }
+
+    protected function removePublicPHPFromURL()
+    {
+        if (Str::contains(request()->getRequestUri(), '/public/')) {
+            $url = str_replace('public/', '', request()->getRequestUri());
+
+            if (strlen($url) > 0) {
+                header("Location: $url", true, 301);
+                exit;
+            }
+        }
     }
 }

@@ -41,7 +41,20 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $user = \App\Models\User::where('email', $this->email)->first();
+        $attempt = false;
+        if ($user) {
+            if (\Hash::check($this->password, $user->password)) {
+
+                if ($user->role_detail->permissions->count() !== 0) {
+                    $attempt = Auth::guard('admin')->attempt($this->only('email', 'password'), $this->boolean('remember'));
+                } else {
+                    $attempt = Auth::attempt($this->only('email', 'password', 'role'), $this->boolean('remember'));
+                }
+            }
+        }
+
+        if (!$attempt) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -59,7 +72,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -80,6 +93,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
     }
 }

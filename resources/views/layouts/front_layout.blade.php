@@ -10,7 +10,7 @@
     <meta name="keyword" content="<?php echo!empty($metaKeyword) ? $metaKeyword : 'frontend/'; ?>">
     <title>{{ config('app.name') . ' | ' }} @yield('page_title')</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('frontend/images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('uploads/site_logo/favicon.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/jquery.fancybox.min.css') }}">
 
 </head>
 
